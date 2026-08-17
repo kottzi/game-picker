@@ -1,0 +1,9 @@
+dependencies {
+    api project(':catalog')
+    implementation project(':auth')
+
+    api 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+}

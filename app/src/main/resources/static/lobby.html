@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Лобби — Game Picker</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="top-bar">
+    <a class="wordmark" href="/">GAME PICKER</a>
+    <div class="top-bar-right">
+        <span id="user-slot"></span>
+        <button class="theme-toggle" data-theme-toggle aria-label="Переключить тему">☾</button>
+    </div>
+</header>
+<main class="container">
+    <div id="page-error"></div>
+    <div id="lobby-header"></div>
+    <div id="content"></div>
+</main>
+<footer class="site-footer">
+    <span>© kottzi</span>
+    <span id="app-version"></span>
+</footer>
+<script type="module" src="/js/app.js"></script>
+<script type="module" src="/js/lobby.js"></script>
+</body>
+</html>

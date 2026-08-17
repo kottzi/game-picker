@@ -1,0 +1,19 @@
+plugins {
+    id 'org.springframework.boot'
+}
+
+springBoot {
+    buildInfo()
+}
+
+dependencies {
+    implementation project(':steam')
+    implementation project(':catalog')
+    implementation project(':auth')
+    implementation project(':lobby')
+
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    implementation 'org.springframework.boot:spring-boot-starter-flyway'
+    implementation 'org.flywaydb:flyway-database-postgresql'
+    runtimeOnly 'org.postgresql:postgresql'
+}
