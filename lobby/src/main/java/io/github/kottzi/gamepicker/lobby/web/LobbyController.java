@@ -58,6 +58,16 @@ public class LobbyController {
         return toView(lobbyService.joinLobby(inviteCode, user.id()));
     }
 
+    @PostMapping("/{lobbyId}/leave")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void leave(
+            @PathVariable Long lobbyId,
+            @CookieValue(name = SESSION_COOKIE_NAME, required = false) String token
+    ) {
+        AppUser user = requireUser(token);
+        lobbyService.leaveLobby(lobbyId, user.id());
+    }
+
     @GetMapping("/{lobbyId}")
     public LobbyView get(@PathVariable Long lobbyId) {
         return toView(lobbyService.getLobby(lobbyId));

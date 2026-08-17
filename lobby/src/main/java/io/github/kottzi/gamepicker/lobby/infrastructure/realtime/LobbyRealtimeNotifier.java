@@ -21,6 +21,11 @@ public class LobbyRealtimeNotifier {
                 Map.of("userId", userId, "displayName", displayName)));
     }
 
+    public void memberLeft(Long lobbyId, Long userId) {
+        publisher.publish(LobbyEventMessage.of(LobbyEventType.MEMBER_LEFT, lobbyId,
+                Map.of("userId", userId)));
+    }
+
     public void pickAdded(Long lobbyId, Long userId, Long gameId) {
         publisher.publish(LobbyEventMessage.of(LobbyEventType.PICK_ADDED, lobbyId,
                 Map.of("userId", userId, "gameId", gameId)));

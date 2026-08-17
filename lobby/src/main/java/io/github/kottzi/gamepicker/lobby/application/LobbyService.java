@@ -192,6 +192,21 @@ public class LobbyService {
     }
 
     @Transactional
+    public void leaveLobby(Long lobbyId, Long userId) {
+        Lobby lobby = getLobbyOrThrow(lobbyId);
+        requireMember(lobby, userId);
+        if (lobby.hostUserId().equals(userId)) {
+            throw new InvalidLobbyStateException("Хост не может покинуть лобби — вместо этого удалите лобби после завершения");
+        }
+        if (lobby.status() == LobbyStatus.CLOSED) {
+            throw new InvalidLobbyStateException("Лобби уже завершено, выходить не из чего");
+        }
+        pickRepository.deleteAllByLobbyIdAndUserId(lobbyId, userId);
+        lobbyMemberRepository.deleteByLobbyIdAndUserId(lobbyId, userId);
+        realtimeNotifier.memberLeft(lobbyId, userId);
+    }
+
+    @Transactional
     public void deleteLobby(Long lobbyId, Long requesterUserId) {
         Lobby lobby = getLobbyOrThrow(lobbyId);
         requireHost(lobby, requesterUserId);

@@ -14,4 +14,6 @@ public interface PickRepository extends CrudRepository<Pick, Long> {
     boolean existsByLobbyIdAndUserIdAndGameId(Long lobbyId, Long userId, Long gameId);
 
     void deleteByLobbyIdAndUserIdAndGameId(Long lobbyId, Long userId, Long gameId);
+
+    void deleteAllByLobbyIdAndUserId(Long lobbyId, Long userId);
 }

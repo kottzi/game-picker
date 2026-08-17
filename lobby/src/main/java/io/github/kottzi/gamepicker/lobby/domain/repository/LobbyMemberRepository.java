@@ -20,6 +20,8 @@ public interface LobbyMemberRepository extends CrudRepository<LobbyMember, Long>
 
     boolean existsByLobbyIdAndUserId(Long lobbyId, Long userId);
 
+    void deleteByLobbyIdAndUserId(Long lobbyId, Long userId);
+
     @Query("""
             SELECT lm.* FROM lobby_members lm
             JOIN app_users u ON u.id = lm.user_id
