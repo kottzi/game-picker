@@ -106,3 +106,16 @@ export async function initVersionFooter() {
         el.textContent = '';
     }
 }
+
+export function bindLogout(button) {
+    if (!button) return;
+    button.addEventListener('click', async () => {
+        if (!confirm('Выйти из аккаунта Steam?')) return;
+        button.disabled = true;
+        try {
+            await apiFetch('/api/auth/logout', { method: 'POST' });
+        } catch {
+        }
+        location.href = '/index.html';
+    });
+}

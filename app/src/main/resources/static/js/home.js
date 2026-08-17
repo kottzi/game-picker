@@ -1,4 +1,4 @@
-import { initTheme, getCurrentUser, apiFetch, escapeHtml, showError, initVersionFooter } from './app.js';
+import { initTheme, getCurrentUser, apiFetch, escapeHtml, showError, initVersionFooter, bindLogout } from './app.js';
 
 initTheme();
 initVersionFooter();
@@ -54,6 +54,9 @@ function renderUserSlot(user) {
             <span>${escapeHtml(user.displayName)}</span>
         </span>
     `;
+    const logoutBtn = document.getElementById('logout-btn');
+    logoutBtn.hidden = false;
+    bindLogout(logoutBtn);
 }
 
 function renderLoggedIn(user) {
