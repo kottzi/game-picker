@@ -1,4 +1,4 @@
-import { initTheme, getCurrentUser, apiFetch, escapeHtml, showError, copyText, initVersionFooter, bindLogout } from './app.js';
+import { initTheme, getCurrentUser, apiFetch, escapeHtml, showError, copyText, initVersionFooter } from './app.js';
 
 initTheme();
 initVersionFooter();
@@ -36,9 +36,6 @@ async function init() {
                 <span>${escapeHtml(currentUser.displayName)}</span>
             </span>
         `;
-        const logoutBtn = document.getElementById('logout-btn');
-        logoutBtn.hidden = false;
-        bindLogout(logoutBtn);
 
         genres = await apiFetch('/api/genres');
         await refreshLobby();
@@ -101,6 +98,21 @@ function renderHeader() {
         e.currentTarget.textContent = ok ? 'Скопировано' : 'Не удалось скопировать';
         setTimeout(() => { e.currentTarget.textContent = 'Скопировать ссылку'; }, 1800);
     });
+
+    const leaveBtn = document.getElementById('leave-lobby-btn');
+    if (leaveBtn) {
+        leaveBtn.addEventListener('click', async () => {
+            if (!confirm('Покинуть это лобби?')) return;
+            leaveBtn.disabled = true;
+            try {
+                await apiFetch(`/api/lobbies/${lobbyId}/leave`, { method: 'POST' });
+                location.href = '/index.html';
+            } catch (err) {
+                showError(pageError, err);
+                leaveBtn.disabled = false;
+            }
+        });
+    }
 }
 
 async function renderContent() {
@@ -370,6 +382,7 @@ function connectEvents() {
     const source = new EventSource(`/api/lobbies/${lobbyId}/events`);
 
     source.addEventListener('MEMBER_JOINED', () => refreshLobby());
+    source.addEventListener('MEMBER_LEFT', () => refreshLobby());
     source.addEventListener('READY_CHANGED', () => refreshLobby());
     source.addEventListener('LOBBY_STATUS_CHANGED', () => refreshLobby());
     source.addEventListener('MATCH_COMPUTED', () => refreshLobby());
