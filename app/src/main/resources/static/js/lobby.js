@@ -163,7 +163,7 @@ async function renderPool() {
     contentEl.innerHTML = `
         ${votingNotStarted ? '<div class="notice">Голосование ещё не началось — это предпросмотр общего пула игр.</div>' : ''}
         ${privacyNotice}
-        <div class="filters" id="filters"></div>
+        ${(pool.games.length >= 6 || selectedGenreIds.size > 0 || onlyFree) ? '<div class="filters" id="filters"></div>' : ''}
         <div class="pool-grid" id="pool-grid"></div>
         ${renderBottomBar()}
     `;
@@ -192,6 +192,7 @@ function bindReadyToggle() {
 
 function renderFilters() {
     const filtersEl = document.getElementById('filters');
+    if (!filtersEl) return;
     filtersEl.innerHTML = `
         ${genres.map(g => `
             <button type="button" class="chip-toggle" data-genre-id="${g.id}"

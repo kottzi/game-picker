@@ -344,13 +344,17 @@ input[type="text"] {
 
 .filters {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
     gap: 0.5rem;
     align-items: center;
     margin-bottom: 1.25rem;
+    padding-bottom: 0.3rem;
+    scrollbar-width: thin;
 }
 
 .chip-toggle {
+    flex-shrink: 0;
     padding: 0.45rem 0.9rem;
     border-radius: 999px;
     font-size: 0.85rem;
