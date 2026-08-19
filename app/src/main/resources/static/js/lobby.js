@@ -63,9 +63,10 @@ function renderHeader() {
                 <span>Код приглашения</span>
                 <button type="button" id="copy-invite" class="code mono" title="Скопировать код">${escapeHtml(lobby.inviteCode)}</button>
             </div>
-            <div style="display:flex; align-items:center; gap:0.6rem;">
+            <div class="header-right">
                 ${showReadyPill ? `<span class="ready-pill ${readyCount === total ? 'all-ready' : ''}">Готово: ${readyCount}/${total}</span>` : ''}
                 <span class="status-pill">${STATUS_LABEL[lobby.status] || lobby.status}</span>
+                ${renderExitActionButton()}
             </div>
         </div>
         <div class="members">
@@ -78,17 +79,6 @@ function renderHeader() {
                 </span>
             `).join('')}
         </div>
-        ${(!lobby._isHost && lobby.status !== 'CLOSED') ? `
-            <button type="button" id="leave-lobby-btn" class="leave-lobby-link">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
-                     stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                    <polyline points="16 17 21 12 16 7"></polyline>
-                    <line x1="21" y1="12" x2="9" y2="12"></line>
-                </svg>
-                Покинуть лобби
-            </button>
-        ` : ''}
     `;
 
     document.getElementById('copy-invite').addEventListener('click', async (e) => {
@@ -98,20 +88,41 @@ function renderHeader() {
         setTimeout(() => { e.currentTarget.textContent = original; }, 1500);
     });
 
-    const leaveBtn = document.getElementById('leave-lobby-btn');
-    if (leaveBtn) {
-        leaveBtn.addEventListener('click', async () => {
-            if (!confirm('Покинуть это лобби?')) return;
-            leaveBtn.disabled = true;
-            try {
-                await apiFetch(`/api/lobbies/${lobbyId}/leave`, { method: 'POST' });
-                location.href = '/index.html';
-            } catch (err) {
-                showError(pageError, err);
-                leaveBtn.disabled = false;
-            }
-        });
+    bindExitAction();
+}
+
+function renderExitActionButton() {
+    const exitIcon = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+             <polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>`;
+    const trashIcon = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline>
+             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
+
+    if (lobby._isHost) {
+        if (lobby.status === 'VOTING') return '';
+        return `<button type="button" id="exit-action-btn" class="exit-action-btn" title="Удалить лобби">${trashIcon}</button>`;
     }
+    if (lobby.status === 'CLOSED') return '';
+    return `<button type="button" id="exit-action-btn" class="exit-action-btn" title="Покинуть лобби">${exitIcon}</button>`;
+}
+
+function bindExitAction() {
+    const btn = document.getElementById('exit-action-btn');
+    if (!btn) return;
+    const isDelete = lobby._isHost;
+    btn.addEventListener('click', async () => {
+        const question = isDelete ? 'Удалить это лобби насовсем?' : 'Покинуть это лобби?';
+        if (!confirm(question)) return;
+        btn.disabled = true;
+        try {
+            await apiFetch(`/api/lobbies/${lobbyId}${isDelete ? '' : '/leave'}`, { method: isDelete ? 'DELETE' : 'POST' });
+            location.href = '/index.html';
+        } catch (err) {
+            showError(pageError, err);
+            btn.disabled = false;
+        }
+    });
 }
 
 async function renderContent() {
@@ -320,17 +331,8 @@ async function renderResults() {
         return;
     }
 
-    const deleteBar = lobby._isHost
-        ? `<div class="action-bar"><span>Лобби больше не нужно?</span>
-             <button id="delete-lobby-btn">Закрыть лобби</button></div>`
-        : '';
-
     if (!results.length) {
-        contentEl.innerHTML = `
-            <div class="empty-state">Голосование закрыто, но пиков не было — играть не во что.</div>
-            ${deleteBar}
-        `;
-        bindDeleteButton();
+        contentEl.innerHTML = '<div class="empty-state">Голосование закрыто, но пиков не было — играть не во что.</div>';
         return;
     }
 
@@ -349,31 +351,12 @@ async function renderResults() {
                 <span class="percentage">${r.matchPercentage}%</span>
             </div>
         `).join('')}
-        ${deleteBar}
     `;
 
     requestAnimationFrame(() => {
         contentEl.querySelectorAll('.bar-fill').forEach(el => {
             el.style.width = `${el.dataset.target}%`;
         });
-    });
-
-    bindDeleteButton();
-}
-
-function bindDeleteButton() {
-    const deleteBtn = document.getElementById('delete-lobby-btn');
-    if (!deleteBtn) return;
-    deleteBtn.addEventListener('click', async () => {
-        if (!confirm('Вы уверены, что хотите удалить данное лобби?.')) return;
-        deleteBtn.disabled = true;
-        try {
-            await apiFetch(`/api/lobbies/${lobbyId}`, { method: 'DELETE' });
-            location.href = '/index.html';
-        } catch (err) {
-            showError(pageError, err);
-            deleteBtn.disabled = false;
-        }
     });
 }
 

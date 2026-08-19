@@ -210,8 +210,8 @@ public class LobbyService {
     public void deleteLobby(Long lobbyId, Long requesterUserId) {
         Lobby lobby = getLobbyOrThrow(lobbyId);
         requireHost(lobby, requesterUserId);
-        if (lobby.status() != LobbyStatus.CLOSED) {
-            throw new InvalidLobbyStateException("Удалить можно только завершённое лобби (сейчас " + lobby.status() + ")");
+        if (lobby.status() == LobbyStatus.VOTING) {
+            throw new InvalidLobbyStateException("Нельзя удалить лобби во время голосования — сначала закройте его");
         }
         realtimeNotifier.lobbyDeleted(lobbyId);
         lobbyRepository.deleteById(lobbyId);
