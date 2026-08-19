@@ -4,8 +4,7 @@ import java.security.SecureRandom;
 
 public final class InviteCodeGenerator {
 
-    // без 0/O/1/I/L, чтобы код было легко продиктовать голосом или прочитать с экрана
-    private static final char[] ALPHABET = "23456789ABCDEFGHJKMNPQRSTUVWXYZ".toCharArray();
+    private static final char[] ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
     private static final int DEFAULT_LENGTH = 6;
     private static final SecureRandom RANDOM = new SecureRandom();
 
