@@ -53,7 +53,6 @@ async function refreshLobby() {
 }
 
 function renderHeader() {
-    const joinUrl = `${location.origin}/index.html?join=${encodeURIComponent(lobby.inviteCode)}`;
     const readyCount = lobby.members.filter(m => m.ready).length;
     const total = lobby.members.length;
     const showReadyPill = lobby.status === 'VOTING';
@@ -62,8 +61,7 @@ function renderHeader() {
         <div class="lobby-header">
             <div class="invite-code">
                 <span>Код приглашения</span>
-                <span class="code mono">${escapeHtml(lobby.inviteCode)}</span>
-                <button id="copy-invite" type="button">Скопировать ссылку</button>
+                <button type="button" id="copy-invite" class="code mono" title="Скопировать код">${escapeHtml(lobby.inviteCode)}</button>
             </div>
             <div style="display:flex; align-items:center; gap:0.6rem;">
                 ${showReadyPill ? `<span class="ready-pill ${readyCount === total ? 'all-ready' : ''}">Готово: ${readyCount}/${total}</span>` : ''}
@@ -94,9 +92,10 @@ function renderHeader() {
     `;
 
     document.getElementById('copy-invite').addEventListener('click', async (e) => {
-        const ok = await copyText(joinUrl);
+        const ok = await copyText(lobby.inviteCode);
+        const original = e.currentTarget.textContent;
         e.currentTarget.textContent = ok ? 'Скопировано' : 'Не удалось скопировать';
-        setTimeout(() => { e.currentTarget.textContent = 'Скопировать ссылку'; }, 1800);
+        setTimeout(() => { e.currentTarget.textContent = original; }, 1500);
     });
 
     const leaveBtn = document.getElementById('leave-lobby-btn');

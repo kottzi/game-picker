@@ -250,6 +250,12 @@ input[type="text"] {
     padding: 0.3rem 0.6rem;
     border: 1px dashed var(--color-border);
     border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+}
+
+.invite-code .code:hover {
+    background: var(--color-surface-hover);
 }
 
 .status-pill,
