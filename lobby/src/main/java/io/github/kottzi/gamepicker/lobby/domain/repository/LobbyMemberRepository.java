@@ -28,11 +28,4 @@ public interface LobbyMemberRepository extends CrudRepository<LobbyMember, Long>
             WHERE lm.lobby_id = :lobbyId AND u.profile_public = false
             """)
     List<LobbyMember> findMembersWithPrivateProfile(@Param("lobbyId") Long lobbyId);
-
-    @Query("""
-            SELECT COUNT(*) FROM lobby_members lm
-            JOIN app_users u ON u.id = lm.user_id
-            WHERE lm.lobby_id = :lobbyId AND u.profile_public = true
-            """)
-    long countPublicMembers(@Param("lobbyId") Long lobbyId);
 }
