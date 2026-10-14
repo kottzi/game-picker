@@ -162,7 +162,10 @@ input[type="text"] {
     height: 38px;
     padding: 0;
     line-height: 1;
-    font-size: 1.05rem;
+}
+
+.theme-toggle[hidden] {
+    display: none;
 }
 
 #app {
@@ -224,6 +227,47 @@ input[type="text"] {
 }
 
 .action-card input[type="text"] { flex: 1; min-width: 0; }
+
+/* icons */
+
+.icon {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background-color: currentColor;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    vertical-align: middle;
+}
+
+.icon--lg {
+    width: 16px;
+    height: 16px;
+}
+
+.icon-exit {
+    -webkit-mask-image: url('/icons/exit.svg');
+    mask-image: url('/icons/exit.svg');
+}
+
+.icon-trash {
+    -webkit-mask-image: url('/icons/trash.svg');
+    mask-image: url('/icons/trash.svg');
+}
+
+.icon-sun {
+    -webkit-mask-image: url('/icons/sun.svg');
+    mask-image: url('/icons/sun.svg');
+}
+
+.icon-moon {
+    -webkit-mask-image: url('/icons/moon.svg');
+    mask-image: url('/icons/moon.svg');
+}
 
 /* lobby */
 
