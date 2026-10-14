@@ -51,7 +51,7 @@ function renderUserSlot(user) {
     userSlot.innerHTML = `
         <span class="user-chip">
             ${user.avatarUrl ? `<img src="${escapeHtml(user.avatarUrl)}" alt="">` : ''}
-            <span>${escapeHtml(user.displayName)}</span>
+            <span class="user-chip-name">${escapeHtml(user.displayName)}</span>
         </span>
     `;
     const logoutBtn = document.getElementById('logout-btn');

@@ -165,10 +165,6 @@ input[type="text"] {
     font-size: 1.05rem;
 }
 
-.theme-toggle[hidden] {
-    display: none;
-}
-
 #app {
     min-height: 65vh;
     display: flex;
@@ -553,6 +549,85 @@ input[type="text"] {
 
 #content {
     padding-bottom: 6rem;
+}
+
+/* mobile */
+
+@media (max-width: 640px) {
+    .container {
+        padding: 0 1rem 4rem;
+    }
+
+    .top-bar {
+        padding: 1rem;
+    }
+
+    .wordmark {
+        font-size: 1rem;
+    }
+
+    .top-bar-right {
+        gap: 0.5rem;
+    }
+
+    .action-card {
+        padding: 1.1rem;
+    }
+
+    .lobby-header {
+        padding: 1rem;
+        gap: 0.75rem;
+    }
+
+    .action-bar {
+        bottom: 3rem;
+        width: calc(100% - 2rem);
+        padding: 0.85rem 1rem;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .action-bar span {
+        font-size: 0.85rem;
+    }
+
+    .match-row {
+        gap: 1rem;
+        padding: 1.1rem;
+    }
+
+    .match-row .rank-ghost {
+        font-size: 3.5rem;
+    }
+
+    .match-row .percentage {
+        font-size: 1.4rem;
+        min-width: 3.5ch;
+    }
+
+    #content {
+        padding-bottom: 7.5rem;
+    }
+}
+
+@media (max-width: 420px) {
+    .user-chip-name {
+        display: none;
+    }
+
+    .invite-code span:first-child {
+        display: none;
+    }
+
+    .match-row {
+        flex-wrap: wrap;
+    }
+
+    .match-row .rank-ghost {
+        display: none;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
