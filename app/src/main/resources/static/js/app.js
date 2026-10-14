@@ -22,7 +22,11 @@ function applyTheme(theme) {
 }
 
 function updateToggleLabel(toggle, theme) {
-    toggle.textContent = theme === 'dark' ? '☀' : '☾';
+    const icon = toggle.querySelector('[data-theme-icon]');
+    if (icon) {
+        icon.classList.toggle('icon-sun', theme === 'dark');
+        icon.classList.toggle('icon-moon', theme !== 'dark');
+    }
     toggle.setAttribute('aria-label', theme === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему');
 }
 
