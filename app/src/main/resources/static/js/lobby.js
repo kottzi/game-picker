@@ -33,7 +33,7 @@ async function init() {
         userSlot.innerHTML = `
             <span class="user-chip">
                 ${currentUser.avatarUrl ? `<img src="${escapeHtml(currentUser.avatarUrl)}" alt="">` : ''}
-                <span>${escapeHtml(currentUser.displayName)}</span>
+                <span class="user-chip-name">${escapeHtml(currentUser.displayName)}</span>
             </span>
         `;
 
